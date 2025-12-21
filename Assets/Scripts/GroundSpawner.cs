@@ -6,10 +6,10 @@ public class GroundSpawner : MonoBehaviour
     public Transform player;
     public GameObject groundTilePrefab;
 
-    int initialTiles = 10;
-    float tileLength = 30f;
-    int tilesAhead = 10;
-    int tilesBehind = 2;
+    public int initialTiles = 10;
+    public float tileLength = 30f;
+    public int tilesAhead = 10;
+    public int tilesBehind = 2;
 
     private LinkedList<GameObject> activeTiles = new LinkedList<GameObject>();
     private float z = 0f;

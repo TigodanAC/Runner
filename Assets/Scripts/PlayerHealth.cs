@@ -29,7 +29,7 @@ public class PlayerHealth : MonoBehaviour
 
         UIManager.Instance?.UpdateHealth(currentHealth, maxHealth);
 
-        if (animController != null)
+        if (animController != null && !isInvincible)
         {
             animController.PlayHitAnimation();
         }
@@ -45,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UIManager.Instance?.UpdateHealth(currentHealth, maxHealth);
 
-        if (animController != null)
+        if (animController != null && !isInvincible)
         {
             animController.PlayPickupAnimation();
         }
