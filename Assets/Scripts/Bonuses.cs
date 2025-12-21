@@ -14,6 +14,7 @@ public class Boneses : MonoBehaviour
     public BonusType bonusType = BonusType.Heal;
     public int healAmount = 1;
     public float invincibilitySeconds = 5f;
+    public int bonusPoints = 1;
 
     void Start()
     {
@@ -36,6 +37,12 @@ public class Boneses : MonoBehaviour
                 break;
         }
 
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddScore(bonusPoints);
+        }
+
+        Debug.Log($"Bonus collected: {bonusType}");
         Destroy(gameObject);
     }
 }

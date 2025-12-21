@@ -130,3 +130,4 @@ MonoBehaviour:
   bonusType: 1
   healAmount: 1
   invincibilitySeconds: 5
+  bonusPoints: 3

@@ -11,10 +11,13 @@ public class PlayerHealth : MonoBehaviour
     private bool isInvincible = false;
     private Coroutine invincCoroutine = null;
 
+    private PlayerAnimationController animController;
+
     void Start()
     {
         currentHealth = Mathf.Clamp(currentHealth == 0 ? maxHealth : currentHealth, 0, maxHealth);
         UIManager.Instance?.UpdateHealth(currentHealth, maxHealth);
+        animController = GetComponent<PlayerAnimationController>();
     }
 
     public void ApplyDamage(int amount)
@@ -26,6 +29,11 @@ public class PlayerHealth : MonoBehaviour
 
         UIManager.Instance?.UpdateHealth(currentHealth, maxHealth);
 
+        if (animController != null)
+        {
+            animController.PlayHitAnimation();
+        }
+
         if (currentHealth <= 0) Die();
     }
 
@@ -36,6 +44,11 @@ public class PlayerHealth : MonoBehaviour
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UIManager.Instance?.UpdateHealth(currentHealth, maxHealth);
+
+        if (animController != null)
+        {
+            animController.PlayPickupAnimation();
+        }
     }
 
     public void MakeInvincible(float seconds)
@@ -48,6 +61,8 @@ public class PlayerHealth : MonoBehaviour
     IEnumerator Invincibility(float seconds)
     {
         isInvincible = true;
+        if (animController != null)
+            animController.SetInvincible(true);
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateInvincibility(isInvincible);
@@ -56,6 +71,8 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(seconds);
 
         isInvincible = false;
+        if (animController != null)
+            animController.SetInvincible(false);
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateInvincibility(isInvincible);

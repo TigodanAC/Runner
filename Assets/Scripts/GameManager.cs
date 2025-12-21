@@ -5,8 +5,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public GameObject gameOverPanel;
-
     void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
@@ -15,30 +13,39 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (gameOverPanel != null) gameOverPanel.SetActive(false);
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void OnPlayerDeath()
     {
-        ShowGameOver();
+        SaveHighScore();
+        RestartLevel();
     }
 
-    public void ShowGameOver()
+    public void SaveHighScore()
     {
-        if (gameOverPanel != null) gameOverPanel.SetActive(true);
-        Time.timeScale = 0;
+        if (ScoreManager.Instance != null)
+        {
+            int currentScore = ScoreManager.Instance.GetCurrentScore();
+            int highScore = PlayerPrefs.GetInt("HighScore", 0);
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+            if (currentScore > highScore)
+            {
+                PlayerPrefs.SetInt("HighScore", currentScore);
+                PlayerPrefs.Save();
+                Debug.Log($"New high score saved: {currentScore}");
+            }
+        }
     }
 
     public void RestartLevel()
     {
-        if (gameOverPanel != null) gameOverPanel.SetActive(false);
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.ResetScore();
         Time.timeScale = 1f;
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void QuitGame()
